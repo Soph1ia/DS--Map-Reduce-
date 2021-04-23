@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+import static java.lang.System.exit;
+
 /**
  * This file contains the code for :
  *
@@ -28,9 +30,9 @@ public class MapReduceAlgorithm {
      */
     public static void main(String[] args) {
 
-        if (args.length < 3) {
-            System.err.println("usage: java MapReduceFiles file1.txt file2.txt file3.txt");
-
+        if (args.length < 4) {
+            System.err.println("usage: java MapReduceFiles file1.txt file2.txt file3.txt linesPerThread");
+            exit(0);
         }
 
         // parses the input and adds to Map -> ( [file num, text ] , [ file num, text] , [file num, text] )
@@ -45,8 +47,10 @@ public class MapReduceAlgorithm {
         {
             System.err.println("Error reading files...\n" + ex.getMessage());
             ex.printStackTrace();
-            System.exit(0);
+            exit(0);
         }
+
+        int linesPerThread = Integer.parseInt(args[3]);
 
 
         // APPROACH #3 : Distributed MapReduce
@@ -66,22 +70,52 @@ public class MapReduceAlgorithm {
                 }
             };
 
+            // Section -> Original: That creates a thread for each file that is present.
+            // TODO: Get the total number of lines
             List<Thread> mapCluster = new ArrayList<Thread>(input.size());
 
             Iterator<Map.Entry<String, String>> inputIter = input.entrySet().iterator();
+            // iterate through the files and their contents.
             while(inputIter.hasNext()) {
+
                 Map.Entry<String, String> entry = inputIter.next();
                 final String file = entry.getKey();
                 final String contents = entry.getValue();
 
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        map(file, contents, mapCallback);
+                // split the entire data by lines
+                String[] lines = contents.split("\\r?\\n");
+                String temp = "";
+                int line_number = 0;
+                // loop through each of the lines and create subsections.
+                for(int i = 0; i <= linesPerThread-1; i++){
+                    // fill the temp string until 1000 lines reached
+                    temp = temp + lines[line_number] + "\n";
+
+                    if( i == linesPerThread-1){ // base case :  #1
+
+                        final String subsectionOfLines = temp; // the number of lines we want to map per thread
+
+                        i = -1; // reset the counter
+
+                        Thread t = new Thread(() -> map(file,subsectionOfLines,mapCallback));
+                        mapCluster.add(t);
+                        t.start();
+                        temp = "";
+                    } else if ((line_number + 1) >= lines.length) { // base case : we reached end of file
+
+                        final String subsectionOfLines = temp; // number of lines we want per thread
+
+                        Thread t = new Thread(() -> map(file,subsectionOfLines,mapCallback));
+                        mapCluster.add(t);
+                        t.start();
+
+                        // quit the for loop
+                        i = linesPerThread + 1;
+//                        break; // go to next file
                     }
-                });
-                mapCluster.add(t);
-                t.start();
+
+                    line_number = line_number + 1; // go to next line in array
+                }
             }
 
             // wait for mapping phase to be over:
@@ -162,6 +196,10 @@ public class MapReduceAlgorithm {
             System.out.println("Time taken for map phase to execute: " + time_taken_for_map_phase + "ms");
             System.out.println("Time taken for group phase to execute: "  + time_taken_for_group_phase + "ms");
             System.out.println("Time taken for reduce phase to execute: " + time_taken_for_reduce_phase + "ms");
+            System.out.println(" ===================================================== ");
+            System.out.println("                     Input Analysis                    ");
+            System.out.println(" ===================================================== ");
+            System.out.println("CMD Argument inputs stated to use "  + linesPerThread  + " lines per thread");
 
         }
     }

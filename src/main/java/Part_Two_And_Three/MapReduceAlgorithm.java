@@ -12,6 +12,8 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.util.Scanner;
 
+import static java.lang.System.exit;
+
 /**
  * This file contains the code for :
  *    1. Part One : the large text files are located in resources.
@@ -36,7 +38,7 @@ public class MapReduceAlgorithm {
 
         if (args.length < 3) {
             System.err.println("usage: java MapReduceFiles file1.txt file2.txt file3.txt");
-
+            exit(0);
         }
 
         // parses the input and adds to Map -> ( [file num, text ] , [ file num, text] , [file num, text] )
@@ -51,7 +53,7 @@ public class MapReduceAlgorithm {
         {
             System.err.println("Error reading files...\n" + ex.getMessage());
             ex.printStackTrace();
-            System.exit(0);
+            exit(0);
         }
 
 
@@ -168,6 +170,7 @@ public class MapReduceAlgorithm {
             System.out.println("Time taken for map phase to execute: " + time_taken_for_map_phase + "ms");
             System.out.println("Time taken for group phase to execute: "  + time_taken_for_group_phase + "ms");
             System.out.println("Time taken for reduce phase to execute: " + time_taken_for_reduce_phase + "ms");
+
 
         }
     }
