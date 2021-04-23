@@ -1,0 +1,306 @@
+package Part_Two_And_Three;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.io.IOException;
+import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.util.Scanner;
+
+/**
+ * This file contains the code for :
+ *    1. Part One : the large text files are located in resources.
+ *    2. Part Two : Parsing PDF
+ *    3. Part Three : Timer to test how long the original algorithm takes to apply the algorithm on the files provided.
+ *
+ * The file is split into three sections
+ *    1. Main Method
+ *    2. Map Reduce Methods
+ *    3. File Handler Methods
+ *
+ * @Author: Sofia Badalova ( 17311566 )
+ */
+public class MapReduceAlgorithm {
+
+    /**
+     * Main Method Simulating Map and Reduce.
+     * The file expects three file addresses to read in.
+     * @param args
+     */
+    public static void main(String[] args) {
+
+        if (args.length < 3) {
+            System.err.println("usage: java MapReduceFiles file1.txt file2.txt file3.txt");
+
+        }
+
+        // parses the input and adds to Map -> ( [file num, text ] , [ file num, text] , [file num, text] )
+        Map<String, String> input = new HashMap<String, String>();
+        try {
+            // Calls readFile which formats the input file as it reads in the contents of the file.
+            input.put(args[0], readFile(args[0]));
+            input.put(args[1], readFile(args[1]));
+            input.put(args[2], readFile(args[2]));
+        }
+        catch (IOException ex)
+        {
+            System.err.println("Error reading files...\n" + ex.getMessage());
+            ex.printStackTrace();
+            System.exit(0);
+        }
+
+
+        // APPROACH #3 : Distributed MapReduce
+        {
+            final Map<String, Map<String, Integer>> output = new HashMap<String, Map<String, Integer>>();
+
+            // MAP Phase :
+
+            long start_of_map_phase = System.currentTimeMillis(); // part three code, benchmarking
+
+            final List<MappedItem> mappedItems = new LinkedList<MappedItem>();
+
+            final MapCallback<String, MappedItem> mapCallback = new MapCallback<>() {
+                @Override
+                public synchronized void mapDone(String file, List<MappedItem> results) {
+                    mappedItems.addAll(results);
+                }
+            };
+
+            List<Thread> mapCluster = new ArrayList<Thread>(input.size());
+
+            Iterator<Map.Entry<String, String>> inputIter = input.entrySet().iterator();
+            while(inputIter.hasNext()) {
+                Map.Entry<String, String> entry = inputIter.next();
+                final String file = entry.getKey();
+                final String contents = entry.getValue();
+
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        map(file, contents, mapCallback);
+                    }
+                });
+                mapCluster.add(t);
+                t.start();
+            }
+
+            // wait for mapping phase to be over:
+            for(Thread t : mapCluster) {
+                try {
+                    t.join();
+                } catch(InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+
+            long time_taken_for_map_phase = System.currentTimeMillis() - start_of_map_phase; // part three code, benchmarking
+
+            // GROUP:
+            long start_of_group_phase = System.currentTimeMillis(); // part three code, benchmarking
+
+            Map<String, List<String>> groupedItems = new HashMap<String, List<String>>();
+
+            Iterator<MappedItem> mappedIter = mappedItems.iterator();
+            while(mappedIter.hasNext()) {
+                MappedItem item = mappedIter.next();
+                String word = item.getWord();
+                String file = item.getFile();
+                List<String> list = groupedItems.get(word);
+                if (list == null) {
+                    list = new LinkedList<String>();
+                    groupedItems.put(word, list);
+                }
+                list.add(file);
+            }
+
+            long time_taken_for_group_phase = System.currentTimeMillis() - start_of_group_phase; // part three code, benchmarking
+
+            // REDUCE:
+            long start_of_reduce_phase  = System.currentTimeMillis(); // part three code, benchmarking
+
+            final ReduceCallback<String, String, Integer> reduceCallback = new ReduceCallback<String, String, Integer>() {
+                @Override
+                public synchronized void reduceDone(String k, Map<String, Integer> v) {
+                    output.put(k, v);
+                }
+            };
+
+            List<Thread> reduceCluster = new ArrayList<Thread>(groupedItems.size());
+
+            Iterator<Map.Entry<String, List<String>>> groupedIter = groupedItems.entrySet().iterator();
+            while(groupedIter.hasNext()) {
+                Map.Entry<String, List<String>> entry = groupedIter.next();
+                final String word = entry.getKey();
+                final List<String> list = entry.getValue();
+
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        reduce(word, list, reduceCallback);
+                    }
+                });
+                reduceCluster.add(t);
+                t.start();
+            }
+
+            // wait for reducing phase to be over:
+            for(Thread t : reduceCluster) {
+                try {
+                    t.join();
+                } catch(InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            long time_taken_for_reduce_phase = System.currentTimeMillis() - start_of_reduce_phase; // part three code, benchmarking
+
+            System.out.println(output);
+
+            System.out.println(" ===================================================== ");
+            System.out.println("                      statistics                      ");
+            System.out.println(" ===================================================== ");
+            System.out.println("Time taken for map phase to execute: " + time_taken_for_map_phase + "ms");
+            System.out.println("Time taken for group phase to execute: "  + time_taken_for_group_phase + "ms");
+            System.out.println("Time taken for reduce phase to execute: " + time_taken_for_reduce_phase + "ms");
+
+        }
+    }
+
+/*  public static void map(String file, String contents, List<MappedItem> mappedItems) {
+    String[] words = contents.trim().split("\\s+");
+    for(String word: words) {
+      mappedItems.add(new MappedItem(word, file));
+    }
+  }
+
+  public static void reduce(String word, List<String> list, Map<String, Map<String, Integer>> output) {
+    Map<String, Integer> reducedList = new HashMap<String, Integer>();
+    for(String file: list) {
+      Integer occurrences = reducedList.get(file);
+      if (occurrences == null) {
+        reducedList.put(file, 1);
+      } else {
+        reducedList.put(file, occurrences.intValue() + 1);
+      }
+    }
+    output.put(word, reducedList);
+  }*/
+
+
+    /**
+     *
+     * ====================================================================================
+     *                               Map and Reduce Methods
+     * ====================================================================================
+     *
+     */
+
+    // Map Interface
+    public static interface MapCallback<E, V> {
+
+        public void mapDone(E key, List<V> values);
+    }
+
+    // Main map function
+    public static void map(String file, String contents, MapCallback<String, MappedItem> callback) {
+        String[] words = contents.trim().split("\\s+");
+        List<MappedItem> results = new ArrayList<MappedItem>(words.length);
+        for(String word: words) {
+            results.add(new MappedItem(word, file));
+        }
+        callback.mapDone(file, results);
+    }
+
+    // reduce callback
+    public static interface ReduceCallback<E, K, V> {
+
+        public void reduceDone(E e, Map<K,V> results);
+    }
+
+
+    // main reduce function
+    public static void reduce(String word, List<String> list, ReduceCallback<String, String, Integer> callback) {
+
+        Map<String, Integer> reducedList = new HashMap<String, Integer>();
+        for(String file: list) {
+            Integer occurrences = reducedList.get(file);
+            if (occurrences == null) {
+                reducedList.put(file, 1);
+            } else {
+                reducedList.put(file, occurrences.intValue() + 1);
+            }
+        }
+        callback.reduceDone(word, reducedList);
+    }
+
+    // Pair class
+    private static class MappedItem {
+
+        private final String word;
+        private final String file;
+
+        public MappedItem(String word, String file) {
+            this.word = word;
+            this.file = file;
+        }
+
+        public String getWord() {
+            return word;
+        }
+
+        public String getFile() {
+            return file;
+        }
+
+        @Override
+        public String toString() {
+            return "[\"" + word + "\",\"" + file + "\"]";
+        }
+    }
+
+    /**
+     *
+     * ====================================================================================
+     *                                File Handler Section
+     * ====================================================================================
+     *
+     */
+
+    // method to read files in..
+    private static String readFile(String pathname) throws IOException {
+        File file = new File(pathname);
+        StringBuilder fileContents = new StringBuilder((int) file.length());
+        Scanner scanner = new Scanner(new BufferedReader(new FileReader(file)));
+        String lineSeparator = System.getProperty("line.separator");
+
+        try {
+            if (scanner.hasNextLine()) {
+                // Format the line
+                String first_input_line = formatFile(scanner.nextLine());
+                fileContents.append(first_input_line);
+            }
+            while (scanner.hasNextLine()) {
+                // format the line
+                String line = formatFile(scanner.nextLine());
+                fileContents.append(lineSeparator + line);
+            }
+            return fileContents.toString();
+        } finally {
+            scanner.close();
+        }
+    }
+
+    private static String formatFile(String unformatted) {
+        String formatted = "";
+        // This removes all special characters, but not spaces naturally present in the file
+        // it replaces special characters with empty string.
+        formatted = unformatted.replaceAll("[^a-zA-Z ]", "");
+        return formatted;
+    }
+}

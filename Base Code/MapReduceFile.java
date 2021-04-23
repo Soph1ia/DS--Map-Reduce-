@@ -10,7 +10,7 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.util.Scanner;
 
-public class MapReduceFiles {
+ class MapReduceFiles {
 
   public static void main(String[] args) {
 
@@ -27,9 +27,9 @@ public class MapReduceFiles {
     }
     catch (IOException ex)
     {
-        System.err.println("Error reading files...\n" + ex.getMessage());
-        ex.printStackTrace();
-        System.exit(0);
+      System.err.println("Error reading files...\n" + ex.getMessage());
+      ex.printStackTrace();
+      System.exit(0);
     }
 
     // APPROACH #1: Brute force
