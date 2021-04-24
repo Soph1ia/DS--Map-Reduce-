@@ -70,8 +70,15 @@ public class MapReduceAlgorithm {
                 }
             };
 
-            // Section -> Original: That creates a thread for each file that is present.
-            // TODO: Get the total number of lines
+            /**
+             *  >> Mapping Phase Modified <<
+             *
+             * This phase creates threads per the number of lines in a file.
+             * if there are no more lines in a file it creates a thread
+             * and then moves onto the next file
+             *
+             */
+
             List<Thread> mapCluster = new ArrayList<Thread>(input.size());
 
             Iterator<Map.Entry<String, String>> inputIter = input.entrySet().iterator();
@@ -91,7 +98,7 @@ public class MapReduceAlgorithm {
                     // fill the temp string until 1000 lines reached
                     temp = temp + lines[line_number] + "\n";
 
-                    if( i == linesPerThread-1){ // base case :  #1
+                    if( i == linesPerThread-1){ // base case :  we reached max number of lines per thread
 
                         final String subsectionOfLines = temp; // the number of lines we want to map per thread
 
@@ -109,9 +116,8 @@ public class MapReduceAlgorithm {
                         mapCluster.add(t);
                         t.start();
 
-                        // quit the for loop
-                        i = linesPerThread + 1;
-//                        break; // go to next file
+                        // quit the for loop and move onto next file
+                        break;
                     }
 
                     line_number = line_number + 1; // go to next line in array
@@ -203,26 +209,6 @@ public class MapReduceAlgorithm {
 
         }
     }
-
-/*  public static void map(String file, String contents, List<MappedItem> mappedItems) {
-    String[] words = contents.trim().split("\\s+");
-    for(String word: words) {
-      mappedItems.add(new MappedItem(word, file));
-    }
-  }
-
-  public static void reduce(String word, List<String> list, Map<String, Map<String, Integer>> output) {
-    Map<String, Integer> reducedList = new HashMap<String, Integer>();
-    for(String file: list) {
-      Integer occurrences = reducedList.get(file);
-      if (occurrences == null) {
-        reducedList.put(file, 1);
-      } else {
-        reducedList.put(file, occurrences.intValue() + 1);
-      }
-    }
-    output.put(word, reducedList);
-  }*/
 
 
     /**
@@ -328,11 +314,17 @@ public class MapReduceAlgorithm {
         }
     }
 
+    /**
+     *  Additional method which parses the unformatted lines and removes any special characters
+     *
+     * @param unformatted
+     * @return
+     */
     private static String formatFile(String unformatted) {
         String formatted = "";
         // This removes all special characters, but not spaces naturally present in the file
         // it replaces special characters with empty string.
-        formatted = unformatted.replaceAll("[^a-zA-Z ]", "");
+        formatted = unformatted.replaceAll("[^a-zA-Z ]", "").toLowerCase();
         return formatted;
     }
 }

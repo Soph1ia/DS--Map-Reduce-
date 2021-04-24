@@ -1,0 +1,43 @@
+
+S	java:S106"9Replace this use of System.out or System.err by a logger.(¢àóÄ8¿™¢ş/
+H
+java:S1604"(Make this anonymous inner class a lambda(÷Ô‚îüÿÿÿÿ8¿™¢ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÌºÖŠùÿÿÿÿ8¿™¢ş/
+e	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8¿™¢ş/
+e	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8¿™¢ş/
+a
+java:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€8¿™¢ş/
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ğŒùğ8¿™¢ş/
+k	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(£–Ğé8ıñäş/
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(î‘šæ8¿™¢ş/
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(¿Ò®8¿™¢ş/
+H
+java:S1604"(Make this anonymous inner class a lambda(€á€‹şÿÿÿÿ8¿™¢ş/
+H
+java:S1604"(Make this anonymous inner class a lambda(€á€‹şÿÿÿÿ8¿™¢ş/
+V	java:S125"<This block of commented-out lines of code should be removed.(»‘«8¿™¢ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(Œ«µƒùÿÿÿÿ8¿™¢ş/
+X	java:S106"9Replace this use of System.out or System.err by a logger.(†£³¬úÿÿÿÿ8¿™¢ş/
+a
+java:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€8¿™¢ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ºÆ²°ùÿÿÿÿ8¿™¢ş/
+S	java:S106"9Replace this use of System.out or System.err by a logger.(¯ÅêÌ8¿™¢ş/
+M
+java:S1199"-Extract this nested code block into a method.(ÒÌâ–øÿÿÿÿ8¿™¢ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ì²ñàúÿÿÿÿ8¿™¢ş/
+y	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÇÒ×öûÿÿÿÿ8ñÎ ş/
+H
+java:S1604"(Make this anonymous inner class a lambda(ˆİœ¨ÿÿÿÿÿ8¿™¢ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ûç—›úÿÿÿÿ8¿™¢ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(¡ä®•şÿÿÿÿ8¿™¢ş/
+n
+java:S3824"NReplace this "Map.get()" and condition with a call to "Map.computeIfAbsent()".(×¯Ò±ÿÿÿÿÿ8¿™¢ş/

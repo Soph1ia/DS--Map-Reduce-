@@ -1,0 +1,59 @@
+
+M
+java:S1199"-Extract this nested code block into a method.(ÒÌâ–øÿÿÿÿ8è¥ş/
+M
+java:S1199"-Extract this nested code block into a method.(ÒÌâ–øÿÿÿÿ8è¥ş/
+M
+java:S1199"-Extract this nested code block into a method.(ÒÌâ–øÿÿÿÿ8è¥ş/
+e	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8è¥ş/
+e	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8è¥ş/
+H
+java:S1604"(Make this anonymous inner class a lambda(õ²‚Úÿÿÿÿÿ8è¥ş/
+H
+java:S1604"(Make this anonymous inner class a lambda(€á€‹şÿÿÿÿ8è¥ş/
+H
+java:S1604"(Make this anonymous inner class a lambda(ˆİœ¨ÿÿÿÿÿ8è¥ş/
+H
+java:S1604"(Make this anonymous inner class a lambda(€á€‹şÿÿÿÿ8è¥ş/
+m
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(Çµí‘8è¥ş/
+[	java:S125"<This block of commented-out lines of code should be removed.(š×—úÿÿÿÿ8è¥ş/
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(¿Ò®8è¥ş/
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(½Ôí 8è¥ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ı‰öûÿÿÿÿ8è¥ş/
+S	java:S106"9Replace this use of System.out or System.err by a logger.(¢àóÄ8è¥ş/
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(½Ôí 8è¥ş/
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ú¶ß8è¥ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(¡ä®•şÿÿÿÿ8è¥ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ì²ñàúÿÿÿÿ8è¥ş/
+S	java:S106"9Replace this use of System.out or System.err by a logger.(¢àóÄ8è¥ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(Œ«µƒùÿÿÿÿ8è¥ş/
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(î‘šæ8è¥ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ûç—›úÿÿÿÿ8è¥ş/
+a
+java:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€8è¥ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(¡ä®•şÿÿÿÿ8è¥ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ì²ñàúÿÿÿÿ8è¥ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÌºÖŠùÿÿÿÿ8è¥ş/
+a
+java:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€8è¥ş/
+S	java:S106"9Replace this use of System.out or System.err by a logger.(¢àóÄ8è¥ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ºÆ²°ùÿÿÿÿ8è¥ş/
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ğŒùğ8è¥ş/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ºÆ²°ùÿÿÿÿ8è¥ş/

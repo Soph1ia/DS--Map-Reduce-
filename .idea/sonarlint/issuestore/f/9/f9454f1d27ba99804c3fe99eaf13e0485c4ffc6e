@@ -1,0 +1,60 @@
+
+M
+java:S1199"-Extract this nested code block into a method.(╥╠тЦ°    8вое■П/
+M
+java:S1199"-Extract this nested code block into a method.(╥╠тЦ°    8вое■П/
+M
+java:S1199"-Extract this nested code block into a method.(╥╠тЦ°    8вое■П/
+e	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(╥В╥щ№    8вое■П/
+e	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(╥В╥щ№    8вое■П/
+H
+java:S1604"(Make this anonymous inner class a lambda(ї▓В┌     8вое■П/
+H
+java:S1604"(Make this anonymous inner class a lambda(АсАЛ■    8вое■П/
+H
+java:S1604"(Make this anonymous inner class a lambda(И▌Ьи     8вое■П/
+H
+java:S1604"(Make this anonymous inner class a lambda(АсАЛ■    8вое■П/
+m
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.(╟╡эС8вое■П/
+S	java:S106"9Replace this use of System.out or System.err by a logger.(п┼ъ╠8вое■П/
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(┐╥оП8вое■П/
+X	java:S106"9Replace this use of System.out or System.err by a logger.(Жг│м·    8вое■П/
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(╜╘эа8вое■П/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(¤ЙЎЮ√    8вое■П/
+S	java:S106"9Replace this use of System.out or System.err by a logger.(врє─8вое■П/
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(╜╘эа8вое■П/
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(·╢Э▀8вое■П/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(бфоХ■    8вое■П/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ь▓ёр·    8вое■П/
+S	java:S106"9Replace this use of System.out or System.err by a logger.(врє─8вое■П/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(Мл╡Г∙    8вое■П/
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(юСЪц8вое■П/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(√чЧЫ·    8вое■П/
+a
+java:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(фа╣А8вое■П/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(бфоХ■    8вое■П/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ь▓ёр·    8вое■П/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(╠║╓К∙    8вое■П/
+a
+java:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(фа╣А8вое■П/
+S	java:S106"9Replace this use of System.out or System.err by a logger.(врє─8вое■П/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(║╞▓░∙    8вое■П/
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ЁМ∙Ё8вое■П/
+y
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(║╞▓░∙    8вое■П/
