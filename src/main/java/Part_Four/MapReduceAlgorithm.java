@@ -52,6 +52,11 @@ public class MapReduceAlgorithm {
 
         int linesPerThread = Integer.parseInt(args[3]);
 
+        if( linesPerThread <= 0) {
+            System.out.println("ERR:: Provide map lines per thread greater than 0");
+            exit(0);
+        }
+
 
         // APPROACH #3 : Distributed MapReduce
         {
@@ -98,17 +103,7 @@ public class MapReduceAlgorithm {
                     // fill the temp string until 1000 lines reached
                     temp = temp + lines[line_number] + "\n";
 
-                    if( i == linesPerThread-1){ // base case :  we reached max number of lines per thread
-
-                        final String subsectionOfLines = temp; // the number of lines we want to map per thread
-
-                        i = -1; // reset the counter
-
-                        Thread t = new Thread(() -> map(file,subsectionOfLines,mapCallback));
-                        mapCluster.add(t);
-                        t.start();
-                        temp = "";
-                    } else if ((line_number + 1) >= lines.length) { // base case : we reached end of file
+                    if ((line_number + 1) >= lines.length) { // base case : we reached end of file
 
                         final String subsectionOfLines = temp; // number of lines we want per thread
 
@@ -118,8 +113,17 @@ public class MapReduceAlgorithm {
 
                         // quit the for loop and move onto next file
                         break;
-                    }
+                    } else if( i == linesPerThread-1){ // base case :  we reached max number of lines per thread
 
+                        final String subsectionOfLines = temp; // the number of lines we want to map per thread
+
+                        i = -1; // reset the counter
+
+                        Thread t = new Thread(() -> map(file,subsectionOfLines,mapCallback));
+                        mapCluster.add(t);
+                        t.start();
+                        temp = "";
+                    }
                     line_number = line_number + 1; // go to next line in array
                 }
             }
