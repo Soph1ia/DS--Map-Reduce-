@@ -173,30 +173,54 @@ public class MapReduceAlgorithm {
                 }
             };
 
+            /**
+             *  >> Reduce Phase Modified <<
+             *
+             * This phase creates threads per a configurable number of words.
+             * if the number of words left is less than the size required for a thread, a thread is created for the remaining words
+             *
+             */
+
             List<Thread> reduceCluster = new ArrayList<Thread>(groupedItems.size());
 
-            int wordNum = groupedItems.size();
+            int wordNum = groupedItems.size();//get the number of words
             
+            //initialise variables
             int start = 0;
             int end = start + wordsPerReduceThread;
             int x = 0;
             
+            //get a list of all grouped words
             List<String> allWords = new ArrayList<>(groupedItems.keySet());
             
+            //loop until all words are done (which means the final index exceeds the number of mappings in groupedItems)
             while(end<wordNum){
-                start = x*wordsPerReduceThread;
-                end = start + wordsPerReduceThread;
-                x+=1;
-                Map<String, List<String>> chunk = new HashMap<String, List<String>>();
-                for(int i = start; i < wordNum && i<end; i++){
-                    chunk.put(allWords.get(i), groupedItems.get(allWords.get(i)));
+                start = x*wordsPerReduceThread;//start index for this submap
+                end = start + wordsPerReduceThread;//end index for this submap
+                
+                x+=1;//multiplier used to generate start and end indices
+
+                Map<String, List<String>> subMap = new HashMap<String, List<String>>();//use to store a portion of the grouping phase output
+
+                for(int i = start; i < wordNum && i<end; i++){//loop and append the word->files they occur in, to the the submap
+                    subMap.put(allWords.get(i), groupedItems.get(allWords.get(i)));
                 }
+
+                //create a thread for each submap
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Iterator<Map.Entry<String, List<String>>> chunkIter = chunk.entrySet().iterator();
-                        while(chunkIter.hasNext()) {
-                            Map.Entry<String, List<String>> entry = chunkIter.next();
+                    /*
+                    the code below is similar to the code that would originally be run on the entire groupedItems hashmap,
+                    but now, instead of iterating over each word mapping outside and creating a thread
+                    for each single mapping, a sub-map is sent to the thread,
+                    instead of calling the reduce method this part here iterates over the mappings and calls the reduce function
+                    itself (instead of creating a thread like what the original code used to do)
+                    */
+
+                        Iterator<Map.Entry<String, List<String>>> subMapIter = subMap.entrySet().iterator();
+                        while(subMapIter.hasNext()) {
+                            Map.Entry<String, List<String>> entry = subMapIter.next();
                             final String word = entry.getKey();
                             final List<String> list = entry.getValue();
                             reduce(word, list, reduceCallback);
