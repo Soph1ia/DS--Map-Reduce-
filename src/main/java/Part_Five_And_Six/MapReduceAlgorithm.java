@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.io.*;
 
 import static java.lang.System.exit;
 
@@ -30,8 +31,8 @@ public class MapReduceAlgorithm {
      */
     public static void main(String[] args) {
 
-        if (args.length < 5) {
-            System.err.println("usage: java MapReduceFiles file1.txt file2.txt file3.txt linesPerMapThread wordsPerReduceThread");
+        if (args.length < 6) {
+            System.err.println("usage: java MapReduceFiles file1.txt file2.txt file3.txt linesPerMapThread wordsPerReduceThread logFileName");
             exit(0);
         }
 
@@ -52,6 +53,7 @@ public class MapReduceAlgorithm {
 
         int linesPerMapThread = Integer.parseInt(args[3]);
         int wordsPerReduceThread = Integer.parseInt(args[4]);
+        String logFileName = args[5];
 
         if( linesPerMapThread <= 0) {
             System.out.println("ERR:: Provide map lines per thread greater than 0");
@@ -216,7 +218,7 @@ public class MapReduceAlgorithm {
             }
             long time_taken_for_reduce_phase = System.currentTimeMillis() - start_of_reduce_phase; // part three code, benchmarking
 
-            System.out.println(output);
+            //System.out.println(output);
 
             System.out.println(" ===================================================== ");
             System.out.println("                      statistics                      ");
@@ -227,8 +229,18 @@ public class MapReduceAlgorithm {
             System.out.println(" ===================================================== ");
             System.out.println("                     Input Analysis                    ");
             System.out.println(" ===================================================== ");
-            System.out.println("CMD Argument inputs stated to use "  + linesPerMapThread  + " lines per thread");
-
+            System.out.println("CMD Argument inputs stated to use "  + linesPerMapThread  + " lines per thread and "  + wordsPerReduceThread  + " words per thread");
+            
+            //used to storedata to a txt file. I run the code several times then load that into excel and perform analysis
+            try{
+                File file = new File(logFileName);
+                FileWriter fr = new FileWriter(file, true);
+                String temp = Integer.toString(linesPerMapThread) + "\t"+Long.toString(time_taken_for_map_phase) + "\t" + Integer.toString(wordsPerReduceThread) + "\t" + Long.toString(time_taken_for_reduce_phase);
+                fr.write(temp+"\n");
+                fr.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
